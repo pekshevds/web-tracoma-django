@@ -3,6 +3,21 @@ from django.db import models
 from django.utils.dateformat import format
 
 
+class Registry(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
+    period = models.DateTimeField(
+        verbose_name="Период"
+    )
+
+    class Meta:
+        abstract = True
+
+
 class Base(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -25,6 +40,10 @@ class Base(models.Model):
         auto_now=True,
         null=True,
         blank=True
+    )
+    marked = models.BooleanField(
+        verbose_name="Помечен на удаление",
+        default=False
     )
 
     class Meta:
@@ -59,6 +78,11 @@ class Document(Base):
         verbose_name="Дата",
         null=True,
         blank=True
+    )
+
+    posted = models.BooleanField(
+        verbose_name="Проведен",
+        default=False
     )
 
     def __str__(self) -> str:

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.dateformat import format
-from main_app.base import Directory, Document
+from main_app.base import Directory, Document, Registry
 from order_app.models import Order
 from main_app.services import ganerate_new_number
 
@@ -26,7 +26,7 @@ class Warehouse(Directory):
 
 class Cargo(Directory):
     order = models.ForeignKey(
-        Order, related_name="cargoes", on_delete=models.PROTECT,
+        Order, related_name="cargo", on_delete=models.PROTECT,
         verbose_name="Заказ")
     width = models.DecimalField(
         verbose_name="Ширина, см", max_digits=15, decimal_places=3)
@@ -53,7 +53,19 @@ class Incoming(Document):
     def save(self, *args, **kwargs) -> None:
         if not self.number:
             self.number = ganerate_new_number(model=Incoming)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+
+    def post(self, *args, **kwargs) -> None:
+        self.save(*args, **kwargs)
+
+        CargoRegistry.objects.filter(register=self.id).delete()
+        for item in self.items.all():
+            CargoRegistry.objects.create(
+                period=self.date,
+                register=self.id,
+                cargo=item.cargo,
+                warehouse=self.recipient,
+                quant=1)
 
     def __str__(self) -> str:
         return f"Приходный ордер №{self.number} от {format(self.date, 'd F Y')}"
@@ -65,7 +77,9 @@ class Incoming(Document):
 
 
 class IncomingItem(models.Model):
-    incoming = models.ForeignKey(Incoming, on_delete=models.PROTECT)
+    incoming = models.ForeignKey(
+        Incoming, on_delete=models.PROTECT, related_name="items"
+    )
     cargo = models.ForeignKey(Cargo, on_delete=models.PROTECT)
 
 
@@ -78,7 +92,7 @@ class Outgoing(Document):
     def save(self, *args, **kwargs) -> None:
         if not self.number:
             self.number = ganerate_new_number(model=Outgoing)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"Расходный ордер №{self.number} от {format(self.date, 'd F Y')}"
@@ -108,7 +122,7 @@ class Moving(Document):
     def save(self, *args, **kwargs) -> None:
         if not self.number:
             self.number = ganerate_new_number(model=Moving)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"Перемещение №{self.number} от {format(self.date, 'd F Y')}"
@@ -122,3 +136,10 @@ class Moving(Document):
 class MovingItem(models.Model):
     moving = models.ForeignKey(Moving, on_delete=models.PROTECT)
     cargo = models.ForeignKey(Cargo, on_delete=models.PROTECT)
+
+
+class CargoRegistry(Registry):
+    register = models.UUIDField()
+    cargo = models.ForeignKey(Cargo, on_delete=models.PROTECT)
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.PROTECT)
+    quant = models.DecimalField(max_digits=15, decimal_places=3)

@@ -7,8 +7,15 @@ from warehouse_app.models import (
     Outgoing,
     OutgoingItem,
     Moving,
-    MovingItem
+    MovingItem,
+    CargoRegistry
 )
+
+
+@admin.register(CargoRegistry)
+class CargoRegistryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'period', 'register',
+                    'cargo', 'warehouse', 'quant',)
 
 
 @admin.register(Warehouse)
