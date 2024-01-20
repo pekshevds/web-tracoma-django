@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'main_app.apps.MainAppConfig',
-    'warehouse_accounting_app.apps.WarehouseAccountingAppConfig',
+    'warehouse_app.apps.WarehouseAppConfig',
+    'order_app.apps.OrderAppConfig',
 ]
 
 MIDDLEWARE = [

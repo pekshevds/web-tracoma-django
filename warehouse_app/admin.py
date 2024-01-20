@@ -1,6 +1,5 @@
 from django.contrib import admin
-from warehouse_accounting_app.models import (
-    Order,
+from warehouse_app.models import (
     Cargo,
     Warehouse
 )
@@ -19,9 +18,3 @@ class CargoAdmin(admin.ModelAdmin):
 class CargoInLine(admin.TabularInline):
     model = Cargo
     fields = ('name',)
-
-
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    inlines = [CargoInLine]
-    list_display = ("__str__", 'id',)
