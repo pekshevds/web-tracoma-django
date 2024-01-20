@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.dateformat import format
 from main_app.base import Document
-from order_app.services import ganerate_new_number
+from main_app.services import ganerate_new_number
 
 
 class Order(Document):
