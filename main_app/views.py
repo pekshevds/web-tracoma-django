@@ -6,3 +6,9 @@ class IndexView(View):
 
     def get(self, request):
         return render(request, template_name="main_app/index.html")
+
+
+class AboutView(View):
+
+    def get(self, request):
+        return render(request, template_name="main_app/about.html")
