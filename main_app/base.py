@@ -4,12 +4,20 @@ from django.utils.dateformat import format
 
 
 class Registry(models.Model):
+    INC = "INC"
+    DEC = "DEC"
+    TYPES_OF_RECORD = [
+        (INC, "Увеличение (приход)"),
+        (DEC, "Уменьшение (расход)"),
+    ]
+
+    type = models.CharField(verbose_name="Тип", max_length=3,
+                            choices=TYPES_OF_RECORD, default=INC)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False
     )
-
     period = models.DateTimeField(
         verbose_name="Период"
     )
@@ -79,7 +87,6 @@ class Document(Base):
         null=True,
         blank=True
     )
-
     posted = models.BooleanField(
         verbose_name="Проведен",
         default=False

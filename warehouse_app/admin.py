@@ -14,53 +14,53 @@ from warehouse_app.models import (
 
 @admin.register(CargoRegistry)
 class CargoRegistryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'period', 'register',
-                    'cargo', 'warehouse', 'quant',)
+    list_display = ("id", "type", "period", "register",
+                    "cargo", "warehouse", "quant",)
 
 
 @admin.register(Warehouse)
 class WarehouseAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "type", 'id',)
+    list_display = ("__str__", "type", "id",)
 
 
 @admin.register(Cargo)
 class CargoAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "order", 'id',)
+    list_display = ("__str__", "order", "id",)
 
 
 class CargoInLine(admin.TabularInline):
     model = Cargo
-    fields = ('name',)
+    fields = ("name",)
 
 
 class IncomingItemInLine(admin.TabularInline):
     model = IncomingItem
-    fields = ('incoming', 'cargo',)
+    fields = ("incoming", "cargo",)
 
 
 @admin.register(Incoming)
 class IncomingAdmin(admin.ModelAdmin):
     inlines = [IncomingItemInLine]
-    list_display = ("__str__", 'id',)
+    list_display = ("__str__", "id",)
 
 
 class OutgoingItemInLine(admin.TabularInline):
     model = OutgoingItem
-    fields = ('outgoing', 'cargo',)
+    fields = ("outgoing", "cargo",)
 
 
 @admin.register(Outgoing)
 class OutgoingAdmin(admin.ModelAdmin):
     inlines = [OutgoingItemInLine]
-    list_display = ("__str__", 'id',)
+    list_display = ("__str__", "id",)
 
 
 class MovingItemInLine(admin.TabularInline):
     model = MovingItem
-    fields = ('moving', 'cargo',)
+    fields = ("moving", "cargo",)
 
 
 @admin.register(Moving)
 class MovingAdmin(admin.ModelAdmin):
     inlines = [MovingItemInLine]
-    list_display = ("__str__", 'id',)
+    list_display = ("__str__", "id",)

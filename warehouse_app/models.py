@@ -143,3 +143,7 @@ class CargoRegistry(Registry):
     cargo = models.ForeignKey(Cargo, on_delete=models.PROTECT)
     warehouse = models.ForeignKey(Warehouse, on_delete=models.PROTECT)
     quant = models.DecimalField(max_digits=15, decimal_places=3)
+
+    class Meta:
+        verbose_name = "Движение груза"
+        verbose_name_plural = "Движения грузов"
