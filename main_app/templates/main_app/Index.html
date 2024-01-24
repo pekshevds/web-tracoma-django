@@ -1,11 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>hello world</h1>
-</body>
-</html>
+{% extends 'main_app/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="main-container">
+	<div class="xs-pd-20-10 pd-ltr-20">
+		<div class="title pb-20">
+			<h2 class="h3 mb-0">Исполнительные документы</h2>
+		</div>
+		<div class="card-box pb-10">
+			<div class="h5 pd-20 mb-0">{{ project.name }}</div>
+			<table class="data-table table nowrap">
+				<thead>
+					<tr>
+						<th class="table-plus">Название документа</th>
+						<th>Создан</th>
+						<th>Изменен</th>								
+						<th class="datatable-nosort">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for document in documents %}
+					<tr>
+						<td class="table-plus">
+							<div class="name-avatar d-flex align-items-center">
+								<div class="avatar mr-2 flex-shrink-0">
+									<img
+										src="{% static 'vendors/images/photo4.jpg' %}"
+										class="border-radius-100 shadow"
+										width="40"
+										height="40"
+										alt=""
+									/>
+								</div>
+								<div class="txt">
+									<div class="weight-600">{{ document.name }}</div>
+								</div>
+							</div>
+						</td>
+						<td>{{ document.created }}</td>
+						<td>{{ document.updated }}</td>								
+						<td>
+							<div class="table-actions">
+								<a href="{% url 'show-document-edit-page1' document_id=document.id %}" data-color="#265ed7"
+									><i class="icon-copy dw dw-edit2"></i
+								></a>
+								<a href="#" data-color="#e95959"
+									><i class="icon-copy dw dw-delete-3"></i
+								></a>
+							</div>
+						</td>
+					</tr>
+					{% endfor %}																					
+				</tbody>
+			</table>
+		</div>
+
+		<div class="footer-wrap pd-20 mb-20 card-box">
+			DeskApp - Bootstrap 4 Admin Template By
+			<a href="https://github.com/dropways" target="_blank"
+				>Ankit Hingarajiya</a
+			>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
