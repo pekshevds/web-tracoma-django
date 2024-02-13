@@ -4,4 +4,4 @@ from django.apps import AppConfig
 class WarehouseAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'warehouse_app'
-    verbose_name = "Учет грузов"
+    verbose_name = 'Учет грузов'

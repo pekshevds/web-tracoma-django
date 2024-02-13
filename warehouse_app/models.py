@@ -5,19 +5,20 @@ from order_app.models import Order
 from main_app.services import ganerate_new_number
 
 
+class TypeOfWarehouse(models.TextChoices):
+    CA = "CA", "Контрагент (юридическое лицо, сторонний контрагент, подрядчик)"
+    WH = "WH", "Склад (адрес, помещение)"
+    EM = "EM", "Сотрудник (курьер, экспедитор)"
+
+
 class Warehouse(Directory):
-
-    CA = "CA"
-    WH = "WH"
-    EM = "WH"
-    TYPES_OF_WAREHOUSE = [
-        (CA, "Контрагент (юридическое лицо, сторонний контрагент, подрядчик)"),
-        (WH, "Склад (адрес, помещение)"),
-        (EM, "Сотрудник (курьер, экспедитор)"),
-    ]
-
     type = models.CharField(verbose_name="Тип", max_length=2,
-                            choices=TYPES_OF_WAREHOUSE, default=WH)
+                            choices=TypeOfWarehouse.choices,
+                            default=TypeOfWarehouse.WH)
+
+    @property
+    def type_to_show(self):
+        return TypeOfWarehouse(self.type).label
 
     class Meta:
         verbose_name = "Место хранения"

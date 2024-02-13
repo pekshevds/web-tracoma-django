@@ -387,9 +387,9 @@
 								><span class="mtext">Справочники</span>
 							</a>
 							<ul class="submenu">
-								<li><a href="#">Места хранения</a></li>
+								<li><a href="{% url 'warehouse_app:show-warehouse-list-page' %}">Места хранения</a></li>
 								<li><a href="#">Контрагенты</a></li>
-								<li><a href="#">Грузы</a></li>
+								<li><a href="{% url 'warehouse_app:show-cargo-list-page' %}">Грузы</a></li>
 							</ul>
 						</li>
 						
@@ -400,9 +400,9 @@
 							</a>
 							<ul class="submenu">
 								<li><a href="#">Заказы</a></li>
-								<li><a href="#">Приходные ордера</a></li>
-								<li><a href="#">Перемещения</a></li>
-								<li><a href="#">Расходные ордера</a></li>
+								<li><a href="{% url 'warehouse_app:show-incoming-list-page' %}">Приходные ордера</a></li>
+								<li><a href="{% url 'warehouse_app:show-moving-list-page' %}">Перемещения</a></li>
+								<li><a href="{% url 'warehouse_app:show-outgoing-list-page' %}">Расходные ордера</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -411,8 +411,22 @@
 		</div>
 		<div class="mobile-menu-overlay"></div>
 
-		{% block content %}
-		{% endblock %}
+
+		<div class="main-container">
+			<div class="xs-pd-20-10 pd-ltr-20">
+				
+				{% block content %}
+				{% endblock %}		
+		
+				<div class="footer-wrap pd-20 mb-20 card-box">
+					DeskApp - Bootstrap 4 Admin Template By
+					<a href="https://github.com/dropways" target="_blank"
+						>Ankit Hingarajiya</a
+					>
+				</div>
+			</div>
+		</div>
+		
 		
 		<!-- welcome modal start -->
 		<div class="welcome-modal">
