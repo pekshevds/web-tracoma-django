@@ -14,6 +14,8 @@
 			<tr>
 				<th class="table-plus">Номер</th>
 				<th class="table-plus">Дата</th>
+				<th>Отправитель</th>
+				<th>Получатель</th>
 				<th>Создан</th>
 				<th>Изменен</th>				
 				<th class="datatable-nosort">Actions</th>
@@ -34,12 +36,13 @@
 							/>
 						</div>
 						<div class="txt">
-							<div class="weight-600">{{ item.name }}</div>
+							<div class="weight-600">{{ item.number }}</div>
 						</div>
 					</div>
-				</td>
-				<td>{{ item.number }}</td>
+				</td>				
 				<td>{{ item.date }}</td>
+				<td>{{ item.sender }}</td>
+				<td>{{ item.recipient }}</td>
 				<td>{{ item.created_at }}</td>
 				<td>{{ item.updated_at }}</td>				
 				<td>
