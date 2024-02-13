@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from warehouse_app.models import (
     Warehouse,
@@ -7,13 +7,33 @@ from warehouse_app.models import (
     Outgoing,
     Moving
 )
+from warehouse_app.forms import WarehouseForm
 
 
 class WarehouseView(View):
     def get(self, request, item_id: str):
-        print(item_id)
+        warehouse = get_object_or_404(Warehouse, pk=item_id)
+        context = {
+            "form": WarehouseForm(instance=warehouse),
+            "item": warehouse
+        }
         return render(request,
-                      template_name="warehouse_app/warehouse.html")
+                      template_name="warehouse_app/warehouse.html",
+                      context=context)
+
+    def post(self, request, item_id: str):
+        warehouse = get_object_or_404(Warehouse, pk=item_id)
+        form = WarehouseForm(request.POST or None, instance=warehouse)
+        if form.is_valid():
+            form.save()
+            return redirect('warehouse_app:show-warehouse-list-page')
+        context = {
+            "form": WarehouseForm(instance=warehouse),
+            "item": warehouse
+        }
+        return render(request,
+                      template_name="warehouse_app/warehouse.html",
+                      context=context)
 
 
 class WarehouseListView(View):
