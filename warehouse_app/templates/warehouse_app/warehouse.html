@@ -8,6 +8,10 @@
 	<h2 class="h3 mb-0">Место хранения</h2>
 </div>
 
+{% for error in errors %}
+	<div class="alert alert-danger" role="alert">{{ error }}</div>
+{% endfor %}
+
 <!-- Default Basic Forms Start -->
 <div class="pd-20 card-box mb-30">
 	<div class="clearfix">
@@ -16,19 +20,17 @@
 			<p class="mb-30">All bootstrap element classies</p>
 		</div>		
 	</div>
-	<form action="{% url 'warehouse_app:show-warehouse-edit-page' item_id=item.id %}" method="POST">
+	{% if item_id %}
+	<form action="{% url 'warehouse_app:show-warehouse-edit-page' item_id=item_id %}" method="POST">
+	{% else %}
+	<form action="{% url 'warehouse_app:show-warehouse-new-page' %}" method="POST">
+	{% endif %}
 		{% csrf_token %}
 		{% for field in form.visible_fields  %}
 		<div class="form-group row">
 			<label class="col-sm-12 col-md-2 col-form-label">{{ field.label }}</label>
 			<div class="col-sm-12 col-md-10">
-				<input
-					class="form-control"
-					type="text"
-					placeholder="{{ field.label }}"
-					name="{{ field.name }}"
-					value="{{ field.value }}"
-				/>
+				{{ field }}
 			</div>			
 		</div>		
 		{% endfor %}

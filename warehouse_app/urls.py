@@ -1,8 +1,10 @@
 from django.urls import path
 from warehouse_app.views import (
     WarehouseListView,
+    NewWarehouseView,
     WarehouseView,
     CargoListView,
+    NewCargoView,
     CargoView,
     IncomingListView,
     IncomingView,
@@ -15,24 +17,30 @@ from warehouse_app.views import (
 app_name = 'warehouse_app'
 
 urlpatterns = [
-    path('catalogs/warehouse',
+    path('catalogs/warehouse/',
          WarehouseListView.as_view(), name='show-warehouse-list-page'),
-    path('catalogs/warehouse/<str:item_id>',
+    path('catalogs/warehouse/new/',
+         NewWarehouseView.as_view(), name='show-warehouse-new-page'),
+    path('catalogs/warehouse/edit/<str:item_id>/',
          WarehouseView.as_view(), name='show-warehouse-edit-page'),
-    path('catalogs/cargo',
+
+    path('catalogs/cargo/',
          CargoListView.as_view(), name='show-cargo-list-page'),
-    path('catalogs/cargo/<str:item_id>',
+    path('catalogs/cargo/new/',
+         NewCargoView.as_view(), name='show-cargo-new-page'),
+    path('catalogs/cargo/<str:item_id>/',
          CargoView.as_view(), name='show-cargo-edit-page'),
-    path('docs/incoming',
+
+    path('docs/incoming/',
          IncomingListView.as_view(), name='show-incoming-list-page'),
-    path('docs/incoming/<str:item_id>',
+    path('docs/incoming/<str:item_id>/',
          IncomingView.as_view(), name='show-incoming-edit-page'),
-    path('docs/outgoing',
+    path('docs/outgoing/',
          OutgoingListView.as_view(), name='show-outgoing-list-page'),
-    path('docs/outgoing/<str:item_id>',
+    path('docs/outgoing/<str:item_id>/',
          OutgoingView.as_view(), name='show-outgoing-edit-page'),
-    path('docs/moving',
+    path('docs/moving/',
          MovingListView.as_view(), name='show-moving-list-page'),
-    path('docs/moving/<str:item_id>',
+    path('docs/moving/<str:item_id>/',
          MovingView.as_view(), name='show-moving-edit-page'),
 ]

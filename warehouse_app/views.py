@@ -7,7 +7,10 @@ from warehouse_app.models import (
     Outgoing,
     Moving
 )
-from warehouse_app.forms import WarehouseForm
+from warehouse_app.forms import (
+    WarehouseForm,
+    CargoForm
+)
 
 
 class WarehouseView(View):
@@ -15,13 +18,14 @@ class WarehouseView(View):
         warehouse = get_object_or_404(Warehouse, pk=item_id)
         context = {
             "form": WarehouseForm(instance=warehouse),
-            "item": warehouse
+            "item_id": warehouse.id,
+            "errors": {}
         }
         return render(request,
                       template_name="warehouse_app/warehouse.html",
                       context=context)
 
-    def post(self, request, item_id: str):
+    def post(self, request, item_id: str = ""):
         warehouse = get_object_or_404(Warehouse, pk=item_id)
         form = WarehouseForm(request.POST or None, instance=warehouse)
         if form.is_valid():
@@ -29,7 +33,35 @@ class WarehouseView(View):
             return redirect('warehouse_app:show-warehouse-list-page')
         context = {
             "form": WarehouseForm(instance=warehouse),
-            "item": warehouse
+            "item_id": warehouse.id,
+            "errors": form.errors
+        }
+        return render(request,
+                      template_name="warehouse_app/warehouse.html",
+                      context=context)
+
+
+class NewWarehouseView(View):
+    def get(self, request):
+        context = {
+            "form": WarehouseForm(),
+            "item_id": None,
+            "errors": {}
+        }
+        return render(request,
+                      template_name="warehouse_app/warehouse.html",
+                      context=context)
+
+    def post(self, request):
+        form = WarehouseForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return redirect('warehouse_app:show-warehouse-list-page')
+
+        context = {
+            "form": WarehouseForm(),
+            "item_id": None,
+            "errors": {}
         }
         return render(request,
                       template_name="warehouse_app/warehouse.html",
@@ -39,7 +71,8 @@ class WarehouseView(View):
 class WarehouseListView(View):
     def get(self, request):
         context = {
-            "items": Warehouse.objects.all()
+            "items": Warehouse.objects.all(),
+            "item_id": 'new'
         }
         return render(request,
                       template_name="warehouse_app/warehouse_list.html",
@@ -48,9 +81,56 @@ class WarehouseListView(View):
 
 class CargoView(View):
     def get(self, request, item_id: str):
-        print(item_id)
+        cargo = get_object_or_404(Cargo, pk=item_id)
+        context = {
+            "form": CargoForm(instance=cargo),
+            "item_id": cargo.id,
+            "errors": {}
+        }
         return render(request,
-                      template_name="warehouse_app/cargo.html")
+                      template_name="warehouse_app/cargo.html",
+                      context=context)
+
+    def post(self, request, item_id: str):
+        cargo = get_object_or_404(Cargo, pk=item_id)
+        form = CargoForm(request.POST or None, instance=cargo)
+        if form.is_valid():
+            form.save()
+            return redirect('warehouse_app:show-cargo-list-page')
+        context = {
+            "form": CargoForm(instance=cargo),
+            "item_id": cargo.id,
+            "errors": form.errors
+        }
+        return render(request,
+                      template_name="warehouse_app/cargo.html",
+                      context=context)
+
+
+class NewCargoView(View):
+    def get(self, request):
+        context = {
+            "form": CargoForm(),
+            "item_id": None,
+            "errors": {}
+        }
+        return render(request,
+                      template_name="warehouse_app/cargo.html",
+                      context=context)
+
+    def post(self, request):
+        form = CargoForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            return redirect('warehouse_app:show-cargo-list-page')
+        context = {
+            "form": CargoForm(),
+            "item_id": None,
+            "errors": form.errors
+        }
+        return render(request,
+                      template_name="warehouse_app/cargo.html",
+                      context=context)
 
 
 class CargoListView(View):
