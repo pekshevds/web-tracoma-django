@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from django.db import models
 from django.utils.dateformat import format
 
@@ -85,7 +86,8 @@ class Document(Base):
     date = models.DateTimeField(
         verbose_name="Дата",
         null=True,
-        blank=True
+        blank=True,
+        default=datetime.now()
     )
     posted = models.BooleanField(
         verbose_name="Проведен",
